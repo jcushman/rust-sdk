@@ -191,6 +191,7 @@ async fn test_invalid_json() {
                     },
                     "message": "Parse error"
                   },
+                  "id": null,
                   "jsonrpc": "2.0"
                 }"#]]
             .assert_eq(&serde_json::to_string_pretty(&response).unwrap());

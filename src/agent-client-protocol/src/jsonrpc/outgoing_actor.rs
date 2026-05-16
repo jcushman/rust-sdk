@@ -86,9 +86,12 @@ pub(super) async fn outgoing_protocol_actor(
                     message: error.message,
                     data: error.data,
                 };
-                // Response with id: None means this is an error notification that couldn't be
-                // correlated to a specific request (e.g., parse error before we could read the id)
-                jsonrpcmsg::Message::Response(jsonrpcmsg::Response::error_v2(jsonrpc_error, None))
+                // JSON-RPC 2.0 parse errors cannot be correlated to a request,
+                // but error responses must still include `"id": null`.
+                jsonrpcmsg::Message::Response(jsonrpcmsg::Response::error_v2(
+                    jsonrpc_error,
+                    Some(jsonrpcmsg::Id::Null),
+                ))
             }
         };
 
